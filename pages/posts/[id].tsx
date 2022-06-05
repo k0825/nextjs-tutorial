@@ -14,7 +14,15 @@ type PostProps = {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+type ParamsType = {
+  params: {
+    id: string;
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({
+  params,
+}: ParamsType) => {
   const postData = await getPostData(params.id);
   return {
     props: {
