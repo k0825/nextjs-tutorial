@@ -6,7 +6,7 @@ import styles from "./layout.module.css";
 
 type LayoutProps = {
   children: React.ReactNode;
-  home: boolean;
+  home?: boolean;
 };
 
 const name = "Kazukiyo Ikarigawa";
