@@ -2,19 +2,31 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout, { siteTitle } from "../components/Layout";
 import Date from "../components/Date";
-import { getSortedPostsData } from "../lib/posts";
 import utilStyles from "../styles/utils.module.css";
 import { GetStaticProps } from "next";
+import { client } from "../lib/client";
 
 type HomeProps = {
-  allPostsData: { date: string; title: string; id: string }[];
+  allPostsData: {
+    createdAt: string;
+    id: string;
+    title: string;
+    content: string;
+    eyecatch: {
+      url: string;
+      height: number;
+      width: number;
+    };
+    tags: { tag: string }[];
+  }[];
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData();
+  const data = await client.get({ endpoint: "blogs" });
+
   return {
     props: {
-      allPostsData,
+      allPostsData: data.contents,
     },
   };
 };
@@ -34,14 +46,14 @@ const Home = ({ allPostsData }: HomeProps) => {
 
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
+          {allPostsData.map(({ id, createdAt, title }) => (
             <li className={utilStyles.listItem} key={id}>
               <Link href={`/posts/${id}`}>
                 <a>{title}</a>
               </Link>
               <br />
               <small className={utilStyles.lightText}>
-                <Date dateString={date} />
+                <Date dateString={createdAt} />
               </small>
             </li>
           ))}
