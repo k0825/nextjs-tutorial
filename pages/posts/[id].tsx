@@ -1,9 +1,9 @@
-import Head from "next/head";
-import Layout from "../../components/Layout";
-import utilStyles from "../../styles/utils.module.css";
-import Date from "../../components/Date";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { client } from "../../lib/client";
+import Head from 'next/head';
+import Layout from '../../components/Layout';
+import utilStyles from '../../styles/utils.module.css';
+import Date from '../../components/Date';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { client } from '../../lib/client';
 
 type PostProps = {
   postData: {
@@ -26,11 +26,9 @@ type ParamsType = {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({
-  params,
-}: ParamsType) => {
+export const getStaticProps: GetStaticProps = async ({ params }: ParamsType) => {
   const data = await client.get({
-    endpoint: "blogs",
+    endpoint: 'blogs',
     contentId: params.id,
   });
   return {
@@ -41,13 +39,12 @@ export const getStaticProps: GetStaticProps = async ({
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await client.get({ endpoint: "blogs" });
+  const data = await client.get({ endpoint: 'blogs' });
   const paths = data.contents.map((content) => `/posts/${content.id}`);
   return { paths, fallback: false };
 };
 
 const Post = ({ postData }: PostProps) => {
-  console.log(postData);
   return (
     <Layout>
       <Head>{postData.title}</Head>
